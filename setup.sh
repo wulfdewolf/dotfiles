@@ -1,7 +1,13 @@
 #!/bin/bash
 
 # Install nvim
-sudo apt install nvim
+sudo apt install neovim
 
 # Move all config to the right place
-mv -r lua/ init.lua ~/.config/nvim
+mkdir ~/.config/nvim
+cp -r lua/ init.lua ~/.config/nvim
+
+# Download and install nerdfont
+wget -qO nerd-font.zip "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.3.0/0xProto.zip" && unzip -j nerd-font.zip "0xProtoNerdFont-Regular.ttf" -d ~/.local/share/fonts && rm nerd-font.zip
+fc-cache -fv
+
