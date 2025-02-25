@@ -25,10 +25,7 @@ return {
 			lspconfig.lua_ls.setup({})
 			lspconfig.ruff.setup({})
 
-			-- Language server keybindings
-			vim.keymap.set("n", "<leader>dh", vim.lsp.buf.hover, {})
-			vim.keymap.set("n", "<leader>dg", vim.lsp.buf.definition, {})
-			vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, {})
+			vim.keymap.set("n", "<leader>d", ":vsplit | lua vim.lsp.buf.definition()<CR>")
 
 			-- Disable overlap between Ruff and Pylsp
 			vim.api.nvim_create_autocmd("LspAttach", {
@@ -46,7 +43,7 @@ return {
 				desc = "LSP: Disable hover capability from Ruff",
 			})
 
-		lspconfig.pylsp.setup({})
-	 end
+			lspconfig.pylsp.setup({})
+		end,
 	},
 }
