@@ -11,6 +11,9 @@ return {
     config = function()
       require("neo-tree").setup({
         filesystem = {
+          filtered_items = {
+            hide_dotfiles = false,
+          },
           use_libuv_file_watcher = true,
           window = {
             mappings = {
