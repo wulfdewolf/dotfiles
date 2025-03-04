@@ -14,6 +14,7 @@ return {
 					"ltex",
 					"pylsp",
 					"ruff",
+
 				},
 			})
 		end,
@@ -25,7 +26,9 @@ return {
 			lspconfig.lua_ls.setup({})
 			lspconfig.ruff.setup({})
 
+			vim.keymap.set("n", "K", vim.lsp.buf.hover)
 			vim.keymap.set("n", "<leader>d", ":vsplit | lua vim.lsp.buf.definition()<CR>")
+			vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action)
 
 			-- Disable overlap between Ruff and Pylsp
 			vim.api.nvim_create_autocmd("LspAttach", {

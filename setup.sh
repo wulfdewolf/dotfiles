@@ -11,3 +11,5 @@ cp -r lua/ init.lua ~/.config/nvim
 wget -qO nerd-font.zip "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.3.0/0xProto.zip" && unzip -j nerd-font.zip "0xProtoNerdFont-Regular.ttf" -d ~/.local/share/fonts && rm nerd-font.zip
 fc-cache -fv
 
+# Install required packages
+sudo apt install tree-sitter-cli luarocks
