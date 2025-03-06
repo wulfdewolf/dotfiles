@@ -11,11 +11,14 @@ return {
     config = function()
       require("neo-tree").setup({
         filesystem = {
+          filtered_items = {
+            hide_gitignored = false,
+          },
           use_libuv_file_watcher = true,
           window = {
             mappings = {
               ["o"] = "system_open",
-              ["p"] = "system_folder_open",
+              ["O"] = "system_folder_open",
             },
           },
         },
