@@ -12,4 +12,7 @@ wget -qO nerd-font.zip "https://github.com/ryanoasis/nerd-fonts/releases/downloa
 fc-cache -fv
 
 # Install required packages
-sudo apt install tree-sitter-cli luarocks
+curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+sudo apt update
+sudo apt install nodejs luarocks xclip
+npm install tree-sitter-cli
