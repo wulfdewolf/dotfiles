@@ -19,10 +19,15 @@ return {
             mappings = {
               ["o"] = "system_open",
               ["O"] = "system_folder_open",
+              ["P"] = "to_parent",
             },
           },
         },
         commands = {
+          to_parent = function(state)
+            local node = state.tree:get_node()
+            require("neo-tree.ui.renderer").focus_node(state, node:get_parent_id())
+          end,
           system_open = function(state)
             local node = state.tree:get_node()
             local path = node:get_id()

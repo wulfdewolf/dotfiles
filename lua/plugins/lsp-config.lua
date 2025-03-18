@@ -15,6 +15,7 @@ return {
           "pylsp",
           "ruff",
           "html",
+          "marksman"
         },
       })
     end,
@@ -22,9 +23,13 @@ return {
   {
     "neovim/nvim-lspconfig",
     config = function()
+      -- nvim-cmp supports additional completion capabilities, so broadcast that to servers
+      local capabilities = vim.lsp.protocol.make_client_capabilities()
+      capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
       local lspconfig = require("lspconfig")
       lspconfig.lua_ls.setup({})
       lspconfig.ruff.setup({})
+      lspconfig.marksman.setup({})
       lspconfig.html.setup({
         filetypes = { "html", "liquid" }
       })
