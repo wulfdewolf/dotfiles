@@ -1,11 +1,14 @@
 #!/bin/bash
 
-# Install nvim
-sudo apt install neovim
+# Install nvim and tmux
+sudo apt update
+sudo apt upgrade -y
+sudo apt install neovim tmux
 
 # Move all config to the right place
 mkdir ~/.config/nvim
 cp -r lua/ init.lua ~/.config/nvim
+cp .tmux.conf ~/.tmux.conf
 
 # Download and install nerdfont
 wget -qO nerd-font.zip "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.3.0/0xProto.zip" && unzip -j nerd-font.zip "0xProtoNerdFont-Regular.ttf" -d ~/.local/share/fonts && rm nerd-font.zip
