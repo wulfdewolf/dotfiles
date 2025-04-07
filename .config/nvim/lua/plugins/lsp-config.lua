@@ -15,7 +15,8 @@ return {
           "pylsp",
           "ruff",
           "html",
-          "marksman"
+          "marksman",
+          "matlab_ls"
         },
       })
     end,
@@ -32,6 +33,17 @@ return {
       lspconfig.marksman.setup({})
       lspconfig.html.setup({
         filetypes = { "html", "liquid" }
+      })
+      lspconfig.matlab_ls.setup({
+        settings = {
+          MATLAB = {
+            indexWorkspace = true,
+            matlabConnectionTiming = "onStart",
+            installPath = "/usr/local/MATLAB/R2024b/",
+            telemetry = true,
+          },
+        },
+        single_file_support = true
       })
 
       vim.keymap.set("n", "K", vim.lsp.buf.hover)
