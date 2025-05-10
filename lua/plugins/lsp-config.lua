@@ -15,6 +15,7 @@ return {
           "pyright",
           "ruff",
           "html",
+          "matlab_ls",
           "marksman"
         },
       })
@@ -30,6 +31,7 @@ return {
       lspconfig.lua_ls.setup({})
       lspconfig.ruff.setup({})
       lspconfig.marksman.setup({})
+      lspconfig.matlab_ls.setup({})
       lspconfig.html.setup({
         filetypes = { "html", "liquid" }
       })
