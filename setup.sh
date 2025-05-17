@@ -32,3 +32,7 @@ sh autogen.sh
 ./configure
 make && sudo make install
 rm -rf tmux/
+chmod +x tmux-sessionizer.sh
+ln -s ~/dotfiles/tmux-sessionizer.sh ~/.local/bin/tmux-sessionizer.sh
+echo bind '"\C-f":"tmux-sessionizer\n"' >> ~/.bashrc
+
