@@ -38,7 +38,7 @@ mv target/release/alacritty ~/.local/bin/alacritty
 cd ~/dotfiles
 rm -rf alacritty_
 rm -rf ~/.config/alacritty/
-ln -s ~/dotfiles/alacritty/ ~/.config/alacritty
+ln -s ~/dotfiles/alacritty ~/.config/alacritty
 
 # Tmux
 git clone https://github.com/tmux/tmux.git

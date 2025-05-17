@@ -1,4 +1,4 @@
-general.import = ["~/.config/alacritty/rose-pine.toml"]
+general.import = ["~/.config/alacritty/catpuccin.toml"]
 
 [env]
 TERM = "xterm-256color"
