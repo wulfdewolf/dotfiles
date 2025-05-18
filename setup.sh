@@ -49,8 +49,14 @@ make && sudo make install
 cd ~/dotfiles
 rm -rf tmux/
 chmod +x tmux-sessionizer.sh
+chmod +x find.sh
+chmod +x project.sh
 ln -s ~/dotfiles/tmux-sessionizer.sh ~/.local/bin/tmux-sessionizer.sh
+ln -s ~/dotfiles/find.sh ~/.local/bin/find.sh
+ln -s ~/dotfiles/project.sh ~/.local/bin/project.sh
 echo bind -x '"\C-f":tmux-sessionizer.sh' >> ~/.bashrc
+echo bind -x '"\ef":find.sh' >> ~/.bashrc
+echo bind -x '"\ep":project.sh' >> ~/.bashrc
 
 # Keybindings
 gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/ name 'Alacritty AltT'
