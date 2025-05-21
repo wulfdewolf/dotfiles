@@ -10,8 +10,10 @@ git config --global core.editor "nvim"
 rm nvim-linux-x86_64.tar.gz
 
 # Download and install nerdfont
-wget -qO nerd-font.zip "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.3.0/0xProto.zip" && unzip -j nerd-font.zip "0xProtoNerdFont-Regular.ttf" -d ~/.local/share/fonts && rm nerd-font.zip
-fc-cache -fv
+wget -qO nerd-font.zip "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.3.0/JetBrainsMono.zip" \
+&& unzip -j nerd-font.zip "JetBrainsMonoNerdFont-Regular.ttf" -d ~/.local/share/fonts \
+&& rm nerd-font.zip \
+&& fc-cache -fv
 
 # Install rust
 curl https://sh.rustup.rs -sSf | sh
@@ -48,9 +50,8 @@ sh autogen.sh
 make && sudo make install
 cd ~/dotfiles
 rm -rf tmux/
-echo bind -x \'\"\C-f\":tmux-sessionizer.sh\' >> ~/.bashrc
-echo bind -x \'\"\\ef\":find.sh\' >> ~/.bashrc
-echo bind -x \'\"\\ep\":project.sh\' >> ~/.bashrc
+echo bind -x \'\"\\C-f\":find.sh\' >> ~/.bashrc
+echo bind -x \'\"\\C-p\":project.sh\' >> ~/.bashrc
 for f in ~/dotfiles/scripts/*; do
     chmod +x $f
     [ -f "$f" ] && ln -fs "$f" ~/.local/bin/$(basename "$f") || echo "Skipped: $(basename "$f")"; 
@@ -64,11 +65,6 @@ mv target/release/yazi ~/.local/bin/yazi
 mv target/release/ya ~/.local/bin/ya
 cd ~/dotfiles
 rm -rf yazi
-
-# Keybindings
-gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/ name 'Alacritty AltT'
-gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/ command 'alacritty'
-gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/ binding '<Alt>t'
 
 # PS1
 echo "PS1='[\A \W] \$ '" >> ~/.bashrc
