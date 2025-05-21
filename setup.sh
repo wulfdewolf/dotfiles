@@ -51,7 +51,9 @@ make && sudo make install
 cd ~/dotfiles
 rm -rf tmux/
 echo bind -x \'\"\\C-f\":find.sh\' >> ~/.bashrc
+echo bind -x \'\"\\C-x\":lazygit\' >> ~/.bashrc
 echo bind -x \'\"\\C-p\":project.sh\' >> ~/.bashrc
+echo bind -x \'\"\\C-n\":yazi\' >> ~/.bashrc
 for f in ~/dotfiles/scripts/*; do
     chmod +x $f
     [ -f "$f" ] && ln -fs "$f" ~/.local/bin/$(basename "$f") || echo "Skipped: $(basename "$f")"; 
