@@ -53,6 +53,7 @@ rm -rf tmux/
 echo bind -x \'\"\\C-f\":find.sh\' >> ~/.bashrc
 echo bind -x \'\"\\C-x\":lazygit\' >> ~/.bashrc
 echo bind -x \'\"\\C-p\":project.sh\' >> ~/.bashrc
+echo bind -x \'\"\\C-g\":tmux_sessionizer.sh\' >> ~/.bashrc
 echo bind -x \'\"\\C-n\":yazi\' >> ~/.bashrc
 for f in ~/dotfiles/scripts/*; do
     chmod +x $f
