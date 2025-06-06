@@ -7,7 +7,6 @@ TERM = "xterm-256color"
 decorations = "buttonless"
 dynamic_padding = false
 opacity = 0.8
-startup_mode = "Fullscreen"
 
 [window.padding]
 x = 0
