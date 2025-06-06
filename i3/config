@@ -161,6 +161,9 @@ exec --no-startup-id xrandr --dpi 96
 exec --no-startup-id xsetroot -cursor_name left_ptr
 exec --no-startup-id feh --bg-scale /usr/share/xfce4/backdrops/xubuntu-wallpaper.png /usr/share/xfce4/backdrops/xubuntu-wallpaper.png
 
+bindsym $mod+Shift+s layout stacking
+bindsym $mod+Shift+w layout tabbed
+bindsym $mod+Shift+v layout splitv
 
 bindsym $mod+h focus left
 bindsym $mod+j focus down
@@ -172,6 +175,9 @@ bindsym $mod+Shift+j move down
 bindsym $mod+Shift+k move up
 bindsym $mod+Shift+l move right
 
+bindsym $mod+Mod1+h move workspace to output left
+bindsym $mod+Mod1+l move workspace to output right
+
 bindsym $mod+s exec --no-startup-id sh -c 'i3-msg workspace 3 && slack'
 bindsym $mod+b exec --no-startup-id sh -c 'i3-msg workspace 2 && brave-browser'
 
@@ -179,3 +185,4 @@ bindsym $mod+Shift+x exec i3lock -c 000000
 exec --no-startup-id xautolock -time 10 -locker "i3lock -c 000000"
 
 exec --no-startup-id setxkbmap -layout us,gb -option grp:alt_caps_toggle
+exec --no-startup-id picom --experimental-backends
