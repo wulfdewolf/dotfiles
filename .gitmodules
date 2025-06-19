@@ -1,5 +1,0 @@
-[submodule "nvim"]
-	path = nvim
-	url = git@github.com:wulfdewolf/nvim.git
-	branch = master
-	update = rebase
