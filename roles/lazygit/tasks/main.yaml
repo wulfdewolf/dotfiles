@@ -25,10 +25,11 @@
     src: /tmp/lazygit.tar.gz
     dest: /tmp/lazygit
     remote_src: yes
-    extra_opts: [--strip-components=1]
 
 - name: Move lazygit binary to /usr/local/bin
-  ansible.builtin.copy:
-    src: /tmp/lazygit
-    dest: /usr/local/bin/lazygit
-    mode: '0755'
+  ansible.builtin.command:
+    cmd: mv /tmp/lazygit/lazygit /usr/local/bin/lazygit
+  args:
+    creates: /usr/local/bin/lazygit
+  become: yes
+

@@ -4,12 +4,12 @@
     user: ubuntu
     chezmoi_repo: "wulfdewolf"
   roles:
-    - regolith
+    #- regolith
+    #- apps
+    #- nodejs
+    #- nvim
+    #- rust
+    #- alacritty
+    #- yazi
+    #- lazygit
     - chezmoi
-    - apps
-    - nodejs
-    - nvim
-    - rust
-    - alacritty
-    - yazi
-    - lazygit

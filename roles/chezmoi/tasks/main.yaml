@@ -24,3 +24,9 @@
   become: false
   when: chezmoi_repo | length > 0
 
+- name: Apply chezmoi dotfiles
+  ansible.builtin.command: /usr/local/bin/chezmoi apply
+  args:
+    chdir: "/home/{{ user }}"
+  become: false
+  when: chezmoi_repo | length > 0

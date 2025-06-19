@@ -9,16 +9,16 @@
   ansible.builtin.shell: |
     curl https://sh.rustup.rs -sSf | sh -s -- -y
   args:
-    creates: /home/wolf/.cargo/bin/rustc
+    creates: "{{ ansible_env.HOME }}/.cargo/bin/rustc"
 
 - name: Ensure Rust stable toolchain is installed as wolf
   ansible.builtin.shell: |
     ~/.cargo/bin/rustup install stable
   args:
-    creates: /home/wolf/.cargo/toolchains/stable
+    creates: "{{ ansible_env.HOME }}/.cargo/toolchains/stable"
 
 - name: Set default Rust toolchain to stable as wolf
   ansible.builtin.shell: |
     ~/.cargo/bin/rustup default stable
   args:
-    creates: /home/wolf/.cargo/toolchains/stable
+    creates: "{{ ansible_env.HOME }}/.cargo/toolchains/stable"

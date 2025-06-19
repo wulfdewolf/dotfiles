@@ -4,6 +4,7 @@
       - curl
       - gnupg
     state: present
+  become: true
 
 - name: Download NodeSource setup script
   ansible.builtin.get_url:
