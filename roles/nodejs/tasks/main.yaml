@@ -1,28 +1,25 @@
-- name: Install curl and gnupg
+- name: Ensure curl and gnupg are present
   ansible.builtin.apt:
     name:
       - curl
       - gnupg
     state: present
 
-- name: Add NodeSource key
-  ansible.builtin.apt_key:
-    url: https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key
-    keyring: /etc/apt/keyrings/nodesource.gpg
-  ignore_errors: yes
+- name: Download NodeSource setup script
+  ansible.builtin.get_url:
+    url: https://deb.nodesource.com/setup_22.x
+    dest: /tmp/nodesource_setup.sh
+    mode: '0755'
 
-- name: Add NodeSource repo for current Ubuntu codename
-  ansible.builtin.apt_repository:
-    repo: >
-      deb [signed-by=/etc/apt/keyrings/nodesource.gpg arch=amd64]
-      https://deb.nodesource.com/node_22.x {{ ansible_lsb.codename | lower }} main
-    filename: nodesource
+- name: Run NodeSource setup script
+  ansible.builtin.shell: bash /tmp/nodesource_setup.sh
+  args:
+    creates: /etc/apt/sources.list.d/nodesource.list
 
-- name: Update apt cache
-  ansible.builtin.apt:
-    update_cache: yes
-
-- name: Install nodejs
+- name: Install Node.js 22.x
   ansible.builtin.apt:
     name: nodejs
+    update_cache: yes
     state: present
+  become: true
+

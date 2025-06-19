@@ -4,6 +4,7 @@
       - curl
       - git
     state: present
+  become: true
 
 - name: Install chezmoi (script-based)
   ansible.builtin.shell: |
@@ -12,6 +13,7 @@
   args:
     executable: /bin/bash
   when: not ansible_check_mode
+  become: true
 
 - name: Initialize chezmoi if repo provided
   ansible.builtin.command: >

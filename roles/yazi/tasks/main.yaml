@@ -1,28 +1,38 @@
-- name: Get latest lazygit release info
-  uri:
-    url: https://api.github.com/repos/jesseduffield/lazygit/releases/latest
-    return_content: yes
-  register: lazygit_release
+- name: Ensure git and cargo are installed
+  ansible.builtin.apt:
+    name:
+      - git
+      - cargo
+    state: present
+    update_cache: yes
+  become: yes
 
-- name: Set lazygit download URL (linux amd64 tarball)
-  set_fact:
-    lazygit_url: "{{ lazygit_release.json.assets | selectattr('name', 'match', 'lazygit_.*_Linux_x86_64.tar.gz') | map(attribute='browser_download_url') | list | first }}"
+- name: Clone or update Yazi repository
+  ansible.builtin.git:
+    repo: https://github.com/sxyazi/yazi.git
+    dest: "{{ ansible_env.HOME }}/.cache/yazi"
+    update: yes
 
-- name: Download lazygit archive
-  get_url:
-    url: "{{ lazygit_url }}"
-    dest: /tmp/lazygit.tar.gz
-    mode: '0644'
+- name: Build Yazi using cargo
+  ansible.builtin.command:
+    cmd: cargo build --release --locked
+    chdir: "{{ ansible_env.HOME }}/.cache/yazi"
+  args:
+    creates: "{{ ansible_env.HOME }}/.cache/yazi/target/release/yazi"
 
-- name: Extract lazygit binary
-  ansible.builtin.unarchive:
-    src: /tmp/lazygit.tar.gz
-    dest: /tmp/lazygit
-    remote_src: yes
-    extra_opts: [--strip-components=1]
+- name: Move yazi binary to /usr/local/bin
+  ansible.builtin.command:
+    cmd: mv target/release/yazi /usr/local/bin/yazi
+    chdir: "{{ ansible_env.HOME }}/.cache/yazi"
+  args:
+    removes: /usr/local/bin/yazi
+  become: yes
 
-- name: Move lazygit binary to /usr/local/bin
-  ansible.builtin.copy:
-    src: /tmp/lazygit/lazygit
-    dest: /usr/local/bin/lazygit
-    mode: '0755'
+- name: Move ya binary to /usr/local/bin
+  ansible.builtin.command:
+    cmd: mv target/release/ya /usr/local/bin/ya
+    chdir: "{{ ansible_env.HOME }}/.cache/yazi"
+  args:
+    removes: /usr/local/bin/ya
+  become: yes
+

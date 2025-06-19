@@ -1,37 +1,34 @@
-- name: Install curl and git (dependencies)
-  ansible.builtin.apt:
-    name:
-      - curl
-      - git
-    state: present
+- name: Download latest Neovim tarball via curl follow redirect
+  ansible.builtin.shell: |
+    curl -L https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.tar.gz -o /tmp/nvim-linux-x86_64.tar.gz
+  args:
+    creates: /tmp/nvim-linux-x86_64.tar.gz
 
-- name: Get latest Neovim release info from GitHub
-  uri:
-    url: https://api.github.com/repos/neovim/neovim/releases/latest
-    return_content: yes
-  register: nvim_release
+- name: Extract nvim to /tmp
+  ansible.builtin.unarchive:
+    src: /tmp/nvim-linux-x86_64.tar.gz
+    dest: /tmp
+    remote_src: yes
 
-- name: Extract AppImage URL
-  set_fact:
-    nvim_appimage_url: "{{ nvim_release.json.assets | selectattr('name', 'search', 'nvim.appimage$') | map(attribute='browser_download_url') | list | first }}"
-
-- name: Download latest Neovim AppImage
-  get_url:
-    url: "{{ nvim_appimage_url }}"
+- name: Copy nvim binary to /usr/local/bin
+  ansible.builtin.copy:
+    src: /tmp/nvim-linux-x86_64/bin/nvim
     dest: /usr/local/bin/nvim
     mode: '0755'
+    remote_src: yes
+  become: true
 
-- name: Set Neovim as default system editor
-  copy:
-    dest: /etc/profile.d/nvim-editor.sh
+- name: Set Neovim as system default editor
+  ansible.builtin.copy:
+    dest: /etc/profile.d/nvim.sh
     content: |
       export EDITOR=/usr/local/bin/nvim
       export VISUAL=/usr/local/bin/nvim
     mode: '0644'
 
 - name: Set Neovim as Git editor for user
-  become: false
   ansible.builtin.git_config:
     name: core.editor
     scope: global
     value: /usr/local/bin/nvim
+

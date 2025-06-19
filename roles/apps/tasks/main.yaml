@@ -1,9 +1,10 @@
 - name: Add Brave browser key
-  ansible.builtin.apt_key:
-    url: https://brave.com/static-assets/repo/brave-core.asc
-    keyring: /usr/share/keyrings/brave-browser-archive-keyring.gpg
+  ansible.builtin.get_url:
+    url: https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg
+    dest: /usr/share/keyrings/brave-browser-archive-keyring.gpg
+    mode: '0644'
 
-- name: Add Brave browser repo
+- name: Add Brave browser repository
   ansible.builtin.apt_repository:
     repo: >
       deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg arch=amd64]
@@ -13,6 +14,7 @@
 - name: Update apt cache
   ansible.builtin.apt:
     update_cache: yes
+  become: true
 
 - name: Install system apps (except neovim)
   ansible.builtin.apt:
@@ -23,6 +25,7 @@
       - fzf
       - luarocks
     state: present
+  become: true
 
 - name: Set Brave as default browser
   become: false

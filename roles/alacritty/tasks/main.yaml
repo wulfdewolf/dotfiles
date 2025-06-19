@@ -13,36 +13,30 @@
       - git
     state: present
 
-- name: Install rustup (Rust toolchain) as normal user
-  become: false
-  shell: curl https://sh.rustup.rs -sSf | sh -s -- -y
-  args:
-    executable: /bin/bash
-  environment:
-    CARGO_HOME: "/home/{{ user }}/.cargo"
-    RUSTUP_HOME: "/home/{{ user }}/.rustup"
-  creates: "/home/{{ user }}/.cargo/bin/cargo"
-
-- name: Add cargo bin to PATH globally
-  copy:
-    dest: /etc/profile.d/rust.sh
-    content: |
-      export CARGO_HOME=/home/{{ user }}/.cargo
-      export RUSTUP_HOME=/home/{{ user }}/.rustup
-      export PATH=$CARGO_HOME/bin:$PATH
-    mode: '0644'
-
-- name: Clone Alacritty repo
-  git:
+- name: Clone Alacritty repo to user cache dir
+  ansible.builtin.git:
     repo: https://github.com/alacritty/alacritty.git
-    dest: /tmp/alacritty
-    version: v0.12.19
+    dest: "{{ ansible_env.HOME }}/.cache/alacritty"
+    update: yes
+  become: false
 
-- name: Build and install Alacritty
-  shell: |
-    source /etc/profile.d/rust.sh
-    cd /tmp/alacritty
-    cargo build --release
-    install -Dm755 target/release/alacritty /usr/local/bin/alacritty
-  args:
-    executable: /bin/bash
+# Your build or install steps here, e.g.
+- name: Build Alacritty
+  ansible.builtin.command:
+    cmd: cargo build --release
+    chdir: "{{ ansible_env.HOME }}/.cache/alacritty"
+  become: false
+
+- name: Copy Alacritty binary to /usr/local/bin
+  ansible.builtin.copy:
+    src: "{{ ansible_env.HOME }}/.cache/alacritty/target/release/alacritty"
+    dest: /usr/local/bin/alacritty
+    mode: '0755'
+  become: yes
+
+# Cleanup: Remove the cloned repo directory
+- name: Remove Alacritty build directory
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/.cache/alacritty"
+    state: absent
+  become: false
