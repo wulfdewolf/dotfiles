@@ -2,7 +2,7 @@
   become: false
   vars:
     user: ubuntu
-    chezmoi_repo: "wulfdewolf"
+    chezmoi_repo: "git@github.com:wulfdewolf/dotfiles.git"
   roles:
     #- regolith
     #- apps

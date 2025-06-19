@@ -1,2 +1,9 @@
 playbook.yaml
 roles/
+
+# Neovim
+**/autoload/
+**/autoload/**/*
+**/plugged/
+**/plugged/**/*
+**/yankring_history*.txt
