@@ -1,0 +1,36 @@
+- name: Add Brave browser key
+  ansible.builtin.apt_key:
+    url: https://brave.com/static-assets/repo/brave-core.asc
+    keyring: /usr/share/keyrings/brave-browser-archive-keyring.gpg
+
+- name: Add Brave browser repo
+  ansible.builtin.apt_repository:
+    repo: >
+      deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg arch=amd64]
+      https://brave-browser-apt-release.s3.brave.com/ stable main
+    filename: brave-browser
+
+- name: Update apt cache
+  ansible.builtin.apt:
+    update_cache: yes
+
+- name: Install system apps (except neovim)
+  ansible.builtin.apt:
+    name:
+      - brave-browser
+      - inkscape
+      - xclip
+      - fzf
+      - luarocks
+    state: present
+
+- name: Set Brave as default browser
+  become: false
+  ansible.builtin.shell: |
+    xdg-settings set default-web-browser brave-browser.desktop
+  args:
+    executable: /bin/bash
+  environment:
+    DISPLAY: ":0"
+    XDG_CURRENT_DESKTOP: "Regolith"
+  when: ansible_env.DISPLAY is defined

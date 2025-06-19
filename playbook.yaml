@@ -1,0 +1,14 @@
+- hosts: localhost
+  become: true
+  vars:
+    user: "{{ lookup('env','SUDO_USER') | default(lookup('env','USER'), true) }}"
+    chezmoi_repo: "wulfdewolf"
+  roles:
+    - regolith
+    - chezmoi
+    - apps
+    - nodejs
+    - neovim
+    - alacritty
+    - yazi
+    - lazygit

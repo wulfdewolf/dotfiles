@@ -1,0 +1,48 @@
+- name: Install Alacritty build dependencies
+  ansible.builtin.apt:
+    name:
+      - cmake
+      - pkg-config
+      - libfreetype6-dev
+      - libfontconfig1-dev
+      - libxcb-xfixes0-dev
+      - libxkbcommon-dev
+      - python3
+      - build-essential
+      - curl
+      - git
+    state: present
+
+- name: Install rustup (Rust toolchain) as normal user
+  become: false
+  shell: curl https://sh.rustup.rs -sSf | sh -s -- -y
+  args:
+    executable: /bin/bash
+  environment:
+    CARGO_HOME: "/home/{{ user }}/.cargo"
+    RUSTUP_HOME: "/home/{{ user }}/.rustup"
+  creates: "/home/{{ user }}/.cargo/bin/cargo"
+
+- name: Add cargo bin to PATH globally
+  copy:
+    dest: /etc/profile.d/rust.sh
+    content: |
+      export CARGO_HOME=/home/{{ user }}/.cargo
+      export RUSTUP_HOME=/home/{{ user }}/.rustup
+      export PATH=$CARGO_HOME/bin:$PATH
+    mode: '0644'
+
+- name: Clone Alacritty repo
+  git:
+    repo: https://github.com/alacritty/alacritty.git
+    dest: /tmp/alacritty
+    version: v0.12.19
+
+- name: Build and install Alacritty
+  shell: |
+    source /etc/profile.d/rust.sh
+    cd /tmp/alacritty
+    cargo build --release
+    install -Dm755 target/release/alacritty /usr/local/bin/alacritty
+  args:
+    executable: /bin/bash

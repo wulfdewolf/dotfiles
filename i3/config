@@ -155,11 +155,10 @@ bar {
         status_command i3status
 }
 
-exec --no-startup-id xrandr --output eDP-1 --mode 1920x1080 --pos 0x0 --rotate normal --output DP-1 --primary --mode 3840x2160 --pos 1920x0 --rotate normal
-exec --no-startup-id xrdb -merge ~/.Xresources
-exec --no-startup-id xrandr --dpi 96
-exec --no-startup-id xsetroot -cursor_name left_ptr
-exec --no-startup-id feh --bg-scale /usr/share/xfce4/backdrops/xubuntu-wallpaper.png /usr/share/xfce4/backdrops/xubuntu-wallpaper.png
+exec_always --no-startup-id xsetroot -cursor_name left_ptr
+exec_always --no-startup-id xrandr --dpi 96
+
+exec_always --no-startup-id sh -c 'autorandr --change && feh --bg-scale /usr/share/xfce4/backdrops/xubuntu-wallpaper.png /usr/share/xfce4/backdrops/xubuntu-wallpaper.png'
 
 bindsym $mod+Shift+s layout stacking
 bindsym $mod+Shift+w layout tabbed
@@ -184,5 +183,7 @@ bindsym $mod+b exec --no-startup-id sh -c 'i3-msg workspace 2 && brave-browser'
 bindsym $mod+Shift+x exec i3lock -c 000000
 exec --no-startup-id xautolock -time 10 -locker "i3lock -c 000000"
 
-exec --no-startup-id setxkbmap -layout us,gb -option grp:alt_caps_toggle
-exec --no-startup-id picom --experimental-backends
+exec_always --no-startup-id setxkbmap -layout us,gb -option grp:alt_shift_toggle
+exec_always --no-startup-id picom --experimental-backends
+
+bindsym $mod+p exec --no-startup-id maim --select | xclip -selection clipboard -t image/jpeg

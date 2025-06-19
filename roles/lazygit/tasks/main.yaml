@@ -1,0 +1,28 @@
+- name: Get latest yazi release info
+  uri:
+    url: https://api.github.com/repos/aaronbieber/yazi/releases/latest
+    return_content: yes
+  register: yazi_release
+
+- name: Set yazi download URL (linux amd64 tar.gz)
+  set_fact:
+    yazi_url: "{{ yazi_release.json.assets | selectattr('name', 'match', 'yazi_.*_linux_amd64.tar.gz') | map(attribute='browser_download_url') | list | first }}"
+
+- name: Download yazi archive
+  get_url:
+    url: "{{ yazi_url }}"
+    dest: /tmp/yazi.tar.gz
+    mode: '0644'
+
+- name: Extract yazi binary
+  ansible.builtin.unarchive:
+    src: /tmp/yazi.tar.gz
+    dest: /tmp/yazi
+    remote_src: yes
+    extra_opts: [--strip-components=1]
+
+- name: Move yazi binary to /usr/local/bin
+  ansible.builtin.copy:
+    src: /tmp/yazi/yazi
+    dest: /usr/local/bin/yazi
+    mode: '0755'

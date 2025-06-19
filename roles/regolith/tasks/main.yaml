@@ -1,0 +1,23 @@
+- name: Add Regolith apt key
+  ansible.builtin.apt_key:
+    url: https://archive.regolith-desktop.com/regolith.key
+    keyring: /usr/share/keyrings/regolith-archive-keyring.gpg
+
+- name: Add Regolith stable repo for Ubuntu 24.04 (Noble)
+  ansible.builtin.apt_repository:
+    repo: >
+      deb [arch=amd64 signed-by=/usr/share/keyrings/regolith-archive-keyring.gpg]
+      https://archive.regolith-desktop.com/ubuntu/stable noble v3.3
+    filename: regolith
+
+- name: Update apt cache
+  ansible.builtin.apt:
+    update_cache: yes
+
+- name: Install Regolith desktop + session + look
+  ansible.builtin.apt:
+    name:
+      - regolith-desktop
+      - regolith-session-flashback
+      - regolith-look-lascaille
+    state: present

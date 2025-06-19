@@ -1,0 +1,28 @@
+- name: Get latest lazygit release info
+  uri:
+    url: https://api.github.com/repos/jesseduffield/lazygit/releases/latest
+    return_content: yes
+  register: lazygit_release
+
+- name: Set lazygit download URL (linux amd64 tarball)
+  set_fact:
+    lazygit_url: "{{ lazygit_release.json.assets | selectattr('name', 'match', 'lazygit_.*_Linux_x86_64.tar.gz') | map(attribute='browser_download_url') | list | first }}"
+
+- name: Download lazygit archive
+  get_url:
+    url: "{{ lazygit_url }}"
+    dest: /tmp/lazygit.tar.gz
+    mode: '0644'
+
+- name: Extract lazygit binary
+  ansible.builtin.unarchive:
+    src: /tmp/lazygit.tar.gz
+    dest: /tmp/lazygit
+    remote_src: yes
+    extra_opts: [--strip-components=1]
+
+- name: Move lazygit binary to /usr/local/bin
+  ansible.builtin.copy:
+    src: /tmp/lazygit/lazygit
+    dest: /usr/local/bin/lazygit
+    mode: '0755'

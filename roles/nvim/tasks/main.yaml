@@ -1,0 +1,37 @@
+- name: Install curl and git (dependencies)
+  ansible.builtin.apt:
+    name:
+      - curl
+      - git
+    state: present
+
+- name: Get latest Neovim release info from GitHub
+  uri:
+    url: https://api.github.com/repos/neovim/neovim/releases/latest
+    return_content: yes
+  register: nvim_release
+
+- name: Extract AppImage URL
+  set_fact:
+    nvim_appimage_url: "{{ nvim_release.json.assets | selectattr('name', 'search', 'nvim.appimage$') | map(attribute='browser_download_url') | list | first }}"
+
+- name: Download latest Neovim AppImage
+  get_url:
+    url: "{{ nvim_appimage_url }}"
+    dest: /usr/local/bin/nvim
+    mode: '0755'
+
+- name: Set Neovim as default system editor
+  copy:
+    dest: /etc/profile.d/nvim-editor.sh
+    content: |
+      export EDITOR=/usr/local/bin/nvim
+      export VISUAL=/usr/local/bin/nvim
+    mode: '0644'
+
+- name: Set Neovim as Git editor for user
+  become: false
+  ansible.builtin.git_config:
+    name: core.editor
+    scope: global
+    value: /usr/local/bin/nvim

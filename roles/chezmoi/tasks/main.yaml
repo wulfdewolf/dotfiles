@@ -1,0 +1,24 @@
+- name: Install dependencies for chezmoi
+  ansible.builtin.apt:
+    name:
+      - curl
+      - git
+    state: present
+
+- name: Install chezmoi (script-based)
+  ansible.builtin.shell: |
+    set -eux
+    curl -fsLS https://chezmoi.io/get | sh -s -- -b /usr/local/bin
+  args:
+    executable: /bin/bash
+  when: not ansible_check_mode
+
+- name: Initialize chezmoi if repo provided
+  ansible.builtin.command: >
+    /usr/local/bin/chezmoi init {{ chezmoi_repo }}
+  args:
+    chdir: "/home/{{ user }}"
+    creates: "/home/{{ user }}/.local/share/chezmoi"
+  become: false
+  when: chezmoi_repo | length > 0
+
