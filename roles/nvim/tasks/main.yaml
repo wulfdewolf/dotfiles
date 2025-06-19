@@ -1,21 +1,8 @@
-- name: Download latest Neovim tarball via curl follow redirect
-  ansible.builtin.shell: |
-    curl -L https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.tar.gz -o /tmp/nvim-linux-x86_64.tar.gz
-  args:
-    creates: /tmp/nvim-linux-x86_64.tar.gz
-
-- name: Extract nvim to /tmp
-  ansible.builtin.unarchive:
-    src: /tmp/nvim-linux-x86_64.tar.gz
-    dest: /tmp
-    remote_src: yes
-
-- name: Copy nvim binary to /usr/local/bin
-  ansible.builtin.copy:
-    src: /tmp/nvim-linux-x86_64/bin/nvim
+- name: Download Neovim AppImage
+  ansible.builtin.get_url:
+    url: https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.appimage
     dest: /usr/local/bin/nvim
     mode: '0755'
-    remote_src: yes
   become: true
 
 - name: Set Neovim as system default editor
@@ -34,3 +21,15 @@
     value: /usr/local/bin/nvim
   become: true
 
+- name: Ensure npm is installed
+  ansible.builtin.apt:
+    name: npm
+    state: present
+  become: true
+
+- name: Install tree-sitter-cli via npm
+  ansible.builtin.shell: |
+    npm install -g tree-sitter-cli
+  args:
+    executable: /bin/bash
+  become: true

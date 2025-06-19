@@ -4,12 +4,13 @@
     user: ubuntu
     chezmoi_repo: "git@github.com:wulfdewolf/dotfiles.git"
   roles:
-    #- regolith
-    #- apps
-    #- nodejs
-    #- nvim
-    #- rust
-    #- alacritty
-    #- yazi
-    #- lazygit
+    - regolith
+    - apps
+    - nodejs
+    - rust
+    - alacritty
+    - yazi
+    - lazygit
+    - nvim
+    - python_tools
     - chezmoi
