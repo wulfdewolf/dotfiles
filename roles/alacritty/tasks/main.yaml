@@ -43,3 +43,18 @@
     path: "{{ ansible_env.HOME }}/.cache/alacritty"
     state: absent
   become: false
+
+- name: Register alacritty as x-terminal-emulator alternative
+  ansible.builtin.command:
+    cmd: >
+      update-alternatives --install
+      /usr/bin/x-terminal-emulator
+      x-terminal-emulator
+      /usr/bin/alacritty
+      50
+  become: yes
+
+- name: Set alacritty as default x-terminal-emulator
+  ansible.builtin.command:
+    cmd: update-alternatives --set x-terminal-emulator /usr/bin/alacritty
+  become: yes

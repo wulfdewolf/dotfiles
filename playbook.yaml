@@ -15,7 +15,9 @@
     #- lazygit
     #- python_tools
     #- nvim
-    - chezmoi
+    #- chezmoi
+    - fonts
+  tasks:
     - name: Set global Git username
       ansible.builtin.command:
         cmd: git config --global user.name "{{ git_user_name }}"
