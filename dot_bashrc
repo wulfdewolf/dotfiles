@@ -58,7 +58,12 @@ bind -x '"\C-p":project.sh'
 bind -x '"\C-g":tmux_sessionizer.sh'
 bind -x '"\C-n":yazi'
 
-function pc {
-  [ -d .git ] && git name-rev --name-only @
+parse_git_branch() {
+  branch=$(git branch 2>/dev/null | grep '^*' | colrm 1 2)
+  if [ -n "$branch" ]; then
+    # Red color \e[31m ... \e[m resets color
+    echo -e "\[\e[31m\]($branch)\[\e[m\]"
+  fi
 }
-PS1='\e];\s\a\n\e[33m\w \e[36m$(pc)\e[m> '
+
+PS1="\w \$(parse_git_branch) \$ "
