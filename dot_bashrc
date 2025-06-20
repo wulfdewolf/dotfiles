@@ -1,10 +1,62 @@
-# Source system-wide bashrc if it exists
+# If not running interactively, don't do anything
+[[ $- != *i* ]] && return
+
+# Force the system-wide bashrc to be sourced.
 if [ -f /etc/bash.bashrc ]; then
-  . /etc/bash.bashrc
+    . /etc/bash.bashrc
 fi
+
+# User specific aliases and functions
+
+# set variable identifying the chroot you work in (used in the prompt below)
+if [ -f /etc/os-release ]; then
+    . /etc/os-release
+    PS1="[\u@\h \w (\$VERSION_ID)]\$ "
+fi
+
+# enable color support of ls and also add handy aliases
+if [ -x /usr/bin/dircolors ]; then
+    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+    alias ls='ls --color=auto'
+    alias dir='dir --color=auto'
+    alias vdir='vdir --color=auto'
+
+    # some more ls aliases
+    alias ll='ls -l'
+    alias la='ls -A'
+    alias l='ls -CF'
+fi
+
+# set a fancy prompt (non-color, unless we know we have color support)
+if [ -x /usr/bin/dircolors ]; then
+    if test -r ~/.dircolors; then
+        eval "$(dircolors -b ~/.dircolors)"
+    else
+        eval "$(dircolors -b)"
+    fi
+fi
+
+# enable programmable completion features (you don't need to enable this manually anymore)
+if [ -f /usr/share/bash-completion/bash_completion ]; then
+    . /usr/share/bash-completion/bash_completion
+fi
+
+# history settings
+HISTCONTROL=ignoredups:erasedups  # no duplicate entries
+HISTSIZE=1000                    # big history file
+HISTFILESIZE=2000                # big history file
+shopt -s histappend              # append to history, don't overwrite
+
+# set some useful environment variables
+export VISUAL=nvim
+export EDITOR="$VISUAL"
+
 
 bind -x '"\C-f":find.sh'
 bind -x '"\C-x":lazygit'
 bind -x '"\C-p":project.sh'
 bind -x '"\C-g":tmux_sessionizer.sh'
 bind -x '"\C-n":yazi'
+
+export PS1='\e[0;32m\w\e[m $'
+
