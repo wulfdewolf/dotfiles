@@ -58,5 +58,7 @@ bind -x '"\C-p":project.sh'
 bind -x '"\C-g":tmux_sessionizer.sh'
 bind -x '"\C-n":yazi'
 
-export PS1='\e[0;32m\w\e[m $'
-
+function pc {
+  [ -d .git ] && git name-rev --name-only @
+}
+PS1='\e];\s\a\n\e[33m\w \e[36m$(pc)\e[m> '
