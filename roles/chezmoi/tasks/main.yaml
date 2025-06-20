@@ -19,14 +19,14 @@
   ansible.builtin.command: >
     /usr/local/bin/chezmoi init {{ chezmoi_repo }}
   args:
-    chdir: "/home/{{ user }}"
-    creates: "/home/{{ user }}/.local/share/chezmoi"
+    chdir: "{{ ansible_env.HOME }}"
+    creates: "{{ ansible_env.HOME }}/.local/share/chezmoi"
   become: false
   when: chezmoi_repo | length > 0
 
 - name: Apply chezmoi dotfiles
   ansible.builtin.command: /usr/local/bin/chezmoi apply
   args:
-    chdir: "/home/{{ user }}"
+    chdir: "{{ ansible_env.HOME }}"
   become: false
   when: chezmoi_repo | length > 0

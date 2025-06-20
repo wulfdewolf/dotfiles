@@ -1,16 +1,16 @@
 - hosts: localhost
   become: false
   vars:
-    user: ubuntu
+    user: wolf
     chezmoi_repo: "git@github.com:wulfdewolf/dotfiles.git"
   roles:
-    - regolith
-    - apps
-    - nodejs
-    - rust
-    - alacritty
-    - yazi
-    - lazygit
-    - nvim
-    - python_tools
+    #- regolith
+    #- apps
+    #- nodejs
+    #- rust
+    #- alacritty
+    #- yazi
+    #- lazygit
+    #- python_tools
+    #- nvim
     - chezmoi
