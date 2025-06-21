@@ -21,7 +21,7 @@
   ansible.builtin.apt:
     name:
       - regolith-desktop
-      - regolith-session-flashback
-      - regolith-look-lascaille
+      - regolith-session-sway
+      - regolith-look-blackhole
     state: present
   become: true
