@@ -16,12 +16,13 @@
     #- python_tools
     #- nvim
     #- chezmoi
-    - fonts
-  tasks:
-    - name: Set global Git username
-      ansible.builtin.command:
-        cmd: git config --global user.name "{{ git_user_name }}"
+    #- fonts
+    - slack
+  #tasks:
+  #  - name: Set global Git username
+  #    ansible.builtin.command:
+  #      cmd: git config --global user.name "{{ git_user_name }}"
 
-    - name: Set global Git email
-      ansible.builtin.command:
-        cmd: git config --global user.email "{{ git_user_email }}"
+  #  - name: Set global Git email
+  #    ansible.builtin.command:
+  #      cmd: git config --global user.email "{{ git_user_email }}"
