@@ -20,6 +20,7 @@ __dotfiles_wayland_teardown
 export XDG_CURRENT_DESKTOP=sway # xdg-desktop-portal
 export XDG_SESSION_DESKTOP=sway # systemd
 export XDG_SESSION_TYPE=wayland # xdg/systemd
+export WLR_RENDERER=vulkan
 
 if command -v dbus-update-activation-environment >/dev/null; then
   dbus-update-activation-environment XDG_CURRENT_DESKTOP XDG_SESSION_DESKTOP XDG_SESSION_TYPE
