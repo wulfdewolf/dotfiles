@@ -6,7 +6,7 @@
     git_user_name: "wulfdewolf"
     git_user_email: "wolf2wulf@gmail.com"
   roles:
-    #- regolith
+    #- sway
     #- apps
     #- nodejs
     #- rust

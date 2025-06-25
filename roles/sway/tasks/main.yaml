@@ -1,0 +1,19 @@
+- name: Update apt cache
+  become: true
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+
+- name: Install Sway and related packages
+  become: true
+  apt:
+    name:
+      - sway
+      - waybar
+      - swaylock
+      - swayidle
+      - pavucontrol
+      - wofi
+      - nm-connection-editor
+    state: present
+    install_recommends: no

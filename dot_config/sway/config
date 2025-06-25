@@ -1,0 +1,57 @@
+# ~/.config/sway/config
+
+# Set mod key to Super (Windows key)
+set $mod Mod4
+
+# Font
+font pango:JetBrainsMono Nerd Font 10
+
+# Set background
+output * bg #222222 solid_color
+
+# Start terminal
+bindsym $mod+Return exec alacritty
+
+# Kill focused window
+bindsym $mod+Shift+q kill
+
+# Start dmenu/wofi
+bindsym $mod+d exec wofi --show drun
+
+# Change focus
+bindsym $mod+h focus left
+bindsym $mod+j focus down
+bindsym $mod+k focus up
+bindsym $mod+l focus right
+
+# Exit Sway
+bindsym $mod+Shift+e exit
+
+# Reload the config
+bindsym $mod+Shift+c reload
+bindsym $mod+Shift+r restart
+
+# Floating toggle
+bindsym $mod+Shift+space floating toggle
+
+# Move focus between workspaces
+bindsym $mod+1 workspace 1
+bindsym $mod+2 workspace 2
+bindsym $mod+3 workspace 3
+bindsym $mod+4 workspace 4
+bindsym $mod+5 workspace 5
+bindsym $mod+6 workspace 6
+# ... add more as needed
+
+# Status bar (swaybar with default config)
+exec waybar
+
+exec swayidle timeout 300 'swaylock -f -c 000000' \
+               timeout 600 'swaymsg "output * dpms off"' \
+               resume 'swaymsg "output * dpms on"'
+
+# Lock screen manually with Mod+Shift+L
+bindsym $mod+Shift+l exec swaylock
+
+# Screenshots
+bindsym Print exec grimshot region copy
