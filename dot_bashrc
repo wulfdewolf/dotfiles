@@ -6,6 +6,11 @@ if [ -f /etc/bash.bashrc ]; then
     . /etc/bash.bashrc
 fi
 
+# Add ~/.local/bin to PATH if it exists
+if [ -d "$HOME/.local/bin" ] && [[ ":$PATH:" != *":$HOME/.local/bin:"* ]]; then
+    export PATH="$HOME/.local/bin:$PATH"
+fi
+
 # User specific aliases and functions
 
 # set variable identifying the chroot you work in (used in the prompt below)

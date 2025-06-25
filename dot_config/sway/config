@@ -1,13 +1,21 @@
-# ~/.config/sway/config
+
+exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=$compositor_name
+exec systemctl --user stop xdg-desktop-portal xdg-desktop-portal-wlr
+exec systemctl --user start xdg-desktop-portal xdg-desktop-portal-wlr
 
 # Set mod key to Super (Windows key)
 set $mod Mod4
+
+input * {
+    xkb_layout gb
+    xkb_options nodeadkeys
+}
 
 # Font
 font pango:JetBrainsMono Nerd Font 10
 
 # Set background
-output * bg #222222 solid_color
+output * bg #000000 solid_color
 
 # Start terminal
 bindsym $mod+Return exec alacritty
@@ -44,14 +52,41 @@ bindsym $mod+6 workspace 6
 # ... add more as needed
 
 # Status bar (swaybar with default config)
-exec waybar
+bar {
+    position top
+    status_command i3status
+
+    # You can also customize fonts, colors, and outputs:
+    font pango:JetBrainsMono Nerd Font 10
+    colors {
+        background #000000
+        statusline #ffffff
+        focused_background #285577
+    }
+}
 
 exec swayidle timeout 300 'swaylock -f -c 000000' \
                timeout 600 'swaymsg "output * dpms off"' \
                resume 'swaymsg "output * dpms on"'
 
-# Lock screen manually with Mod+Shift+L
-bindsym $mod+Shift+l exec swaylock
-
 # Screenshots
 bindsym Print exec grimshot region copy
+
+input "*" {
+    tap enabled
+}
+
+# Move window to workspace N with $mod + Shift + N
+bindsym $mod+Shift+1 move container to workspace number 1
+bindsym $mod+Shift+2 move container to workspace number 2
+bindsym $mod+Shift+3 move container to workspace number 3
+bindsym $mod+Shift+4 move container to workspace number 4
+bindsym $mod+Shift+5 move container to workspace number 5
+
+# Move windows within workspace using $mod + Shift + h/j/k/l
+bindsym $mod+Shift+h move left
+bindsym $mod+Shift+j move down
+bindsym $mod+Shift+k move up
+bindsym $mod+Shift+l move right
+
+bindsym $mod+f fullscreen toggle
