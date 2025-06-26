@@ -26,6 +26,8 @@
       - xclip
       - fzf
       - luarocks
+      - numlockx
+      - flameshot 
     state: present
   become: true
 
@@ -35,7 +37,3 @@
     xdg-settings set default-web-browser brave-browser.desktop
   args:
     executable: /bin/bash
-  environment:
-    DISPLAY: ":0"
-    XDG_CURRENT_DESKTOP: "Regolith"
-  when: ansible_env.DISPLAY is defined
