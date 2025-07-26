@@ -37,34 +37,43 @@ end, { noremap = true, silent = true })
 local uv = vim.loop
 
 vim.api.nvim_create_user_command("SendCodeToTmuxTmpRun", function(opts)
-    local lines = vim.api.nvim_buf_get_lines(0, opts.line1 - 1, opts.line2, false)
+    -- 1 · collect the visually‑selected lines
+    local raw_lines = vim.api.nvim_buf_get_lines(0, opts.line1 - 1, opts.line2, false)
 
-    for i, line in ipairs(lines) do
-        lines[i] = line:gsub("^%s*>>>%s*", "")
+    -- 2 · strip >>> and ... prompts, keep everything else
+    local lines = {}
+    for _, line in ipairs(raw_lines) do
+        -- match >>> prompt first …
+        local code = line:match("^%s*>>>%s*(.*)")
+        -- … then match continuation prompt if the first failed
+        if not code then
+            code = line:match("^%s*%.%.%.%s*(.*)")
+        end
+        -- keep only lines that actually had a prompt
+        if code and code ~= "" then
+            table.insert(lines, code)
+        end
+    end
+    if #lines == 0 then
+        vim.notify("Selection has no >>> or ... prompt lines", vim.log.levels.WARN)
+        return
     end
 
+    -- 3 · write to temp file
     local tmpfile = "/tmp/nvim_tmp_run.py"
-    local fd = uv.fs_open(tmpfile, "w", 438)
+    local fd      = uv.fs_open(tmpfile, "w", 438)
     uv.fs_write(fd, table.concat(lines, "\n"), -1)
     uv.fs_close(fd)
 
-    local handle = io.popen("tmux display-message -p '#S'")
-    local session_name = handle:read("*a"):gsub("%s+", "")
-    handle:close()
-
-    -- Check if tmux window named 'ex' exists, kill it if yes
-    local check_cmd = string.format("tmux list-windows -t %s -F '#{window_name}' | grep -w ex", session_name)
-    local check_handle = io.popen(check_cmd)
-    local exists = check_handle:read("*a")
-    check_handle:close()
-
-    if exists ~= "" then
-        os.execute(string.format("tmux kill-window -t %s:ex", session_name))
+    -- 4 · open/refresh the tmux window “ex”
+    local session_name = io.popen("tmux display-message -p '#S'"):read("*a"):gsub("%s+", "")
+    if io.popen(("tmux list-windows -t %s -F '#{window_name}' | grep -w ex"):format(session_name)):read("*a") ~= "" then
+        os.execute(("tmux kill-window -t %s:ex"):format(session_name))
     end
-
-    os.execute(string.format("tmux new-window -n ex -t %s 'uv run python -i %s'", session_name, tmpfile))
-    os.execute(string.format("tmux select-window -t %s:ex", session_name))
+    os.execute(("tmux new-window -n ex -t %s 'uv run python -i %s'"):format(session_name, tmpfile))
+    os.execute(("tmux select-window -t %s:ex"):format(session_name))
 end, { range = true })
 
--- Visual mode map to send selection to command
+-- visual‑mode shortcut
 vim.keymap.set('v', '<C-r>', ":'<,'>SendCodeToTmuxTmpRun<CR>", { noremap = true, silent = true })
+
