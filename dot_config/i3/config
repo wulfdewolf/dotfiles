@@ -178,6 +178,7 @@ exec --no-startup-id xautolock -time 10 -locker "i3lock -c 000000"
 
 exec_always --no-startup-id sh -c 'sleep 1 && setxkbmap -layout gb'
 exec_always --no-startup-id picom --experimental-backends
+exec_always setup_monitors.sh
 
 # Screenshots
 bindsym Print exec flameshot gui
@@ -186,5 +187,4 @@ bindsym Print exec flameshot gui
 exec_always --no-startup-id numlockx on
 
 # Touchpad tapping enabled
-# exec_always --no-startup-id xinput set-prop 11 "libinput Tapping Enabled" 1
 focus_follows_mouse yes
