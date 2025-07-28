@@ -176,9 +176,9 @@ bindsym $mod+b exec --no-startup-id sh -c 'i3-msg workspace 2 && brave-browser'
 bindsym $mod+Shift+x exec i3lock -c 000000
 exec --no-startup-id xautolock -time 10 -locker "i3lock -c 000000"
 
-exec_always --no-startup-id sh -c 'sleep 1 && setxkbmap -layout gb'
+#exec_always --no-startup-id sh -c 'sleep 1 && setxkbmap -layout gb'
 exec_always --no-startup-id picom --experimental-backends
-exec_always setup_monitors.sh
+exec setup_monitors.sh
 
 # Screenshots
 bindsym Print exec flameshot gui
@@ -188,3 +188,6 @@ exec_always --no-startup-id numlockx on
 
 # Touchpad tapping enabled
 focus_follows_mouse yes
+
+bindsym XF86MonBrightnessUp exec --no-startup-id brightnessctl set 5%+
+bindsym XF86MonBrightnessDown exec --no-startup-id brightnessctl set 5%-
