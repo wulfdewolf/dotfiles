@@ -11,12 +11,12 @@ return {
             require("mason-lspconfig").setup({
                 ensure_installed = {
                     "lua_ls",
-                    "ltex",
                     "pyright",
                     "ruff",
                     "html",
                     "matlab_ls",
-                    "marksman"
+                    "marksman",
+                    "tinymist"
                 },
             })
         end,
@@ -35,6 +35,15 @@ return {
             lspconfig.html.setup({
                 filetypes = { "html", "liquid" }
             })
+            lspconfig.tinymist.setup {
+                settings = {
+                    formatterMode = "typstyle",
+                    semanticTokens = "disable",
+                    formatterProseWrap = true,
+                    formatterPrintWidth = 88
+                }
+            }
+            vim.keymap.set("n", "<leader>ff", vim.lsp.buf.format, {})
 
             -- Disable overlap between Ruff and Pyright
             vim.api.nvim_create_autocmd("LspAttach", {
@@ -52,15 +61,17 @@ return {
                 desc = 'LSP: Disable hover capability from Ruff',
             })
             require('lspconfig').pyright.setup {
+                on_attach = function(client, bufnr)
+                    client.server_capabilities.diagnosticProvider = nil
+                end,
                 settings = {
                     pyright = {
-                        -- Using Ruff's import organizer
                         disableOrganizeImports = true,
                     },
                     python = {
                         analysis = {
-                            -- Ignore all files for analysis to exclusively use Ruff for linting
                             ignore = { '*' },
+                            typeCheckingMode = "off",
                         },
                     },
                 },

@@ -7,7 +7,7 @@
     git_user_email: "wolf2wulf@gmail.com"
   roles:
     #- apps
-    #- nodejs
+    - nodejs
     #- rust
     #- alacritty
     #- yazi
@@ -16,7 +16,7 @@
     #- nvim
     #- chezmoi
     #- fonts
-    - slack
+    # - slack
   #tasks:
   #  - name: Set global Git username
   #    ansible.builtin.command:

@@ -4,23 +4,49 @@
       - curl
       - gnupg
     state: present
-  become: true
-
-- name: Download NodeSource setup script
+  become: yes
+- name: Download NVM install script
   ansible.builtin.get_url:
-    url: https://deb.nodesource.com/setup_22.x
-    dest: /tmp/nodesource_setup.sh
+    url: https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh
+    dest: /tmp/install_nvm.sh
     mode: '0755'
-
-- name: Run NodeSource setup script
-  ansible.builtin.shell: bash /tmp/nodesource_setup.sh
-  args:
-    creates: /etc/apt/sources.list.d/nodesource.list
-
-- name: Install Node.js 22.x
-  ansible.builtin.apt:
-    name: nodejs
-    update_cache: yes
-    state: present
   become: true
 
+- name: Install NVM
+  ansible.builtin.shell: bash /tmp/install_nvm.sh
+  args:
+    executable: /bin/bash
+    creates: "{{ ansible_user_dir }}/.nvm/nvm.sh"
+
+- name: Add NVM init to .bashrc
+  ansible.builtin.lineinfile:
+    path: "{{ ansible_user_dir }}/.bashrc"
+    line: |
+      export NVM_DIR="$HOME/.nvm"
+      [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+    create: yes
+    state: present
+    insertafter: EOF
+
+- name: Install Node.js 22 and set as default
+  ansible.builtin.shell: |
+    export NVM_DIR="{{ ansible_user_dir }}/.nvm"
+    source "$NVM_DIR/nvm.sh"
+    nvm install 22
+    nvm alias default 22
+    nvm use 22
+  args:
+    executable: /bin/bash
+
+- name: Verify Node.js version
+  ansible.builtin.shell: |
+    export NVM_DIR="{{ ansible_user_dir }}/.nvm"
+    source "$NVM_DIR/nvm.sh"
+    node -v
+  args:
+    executable: /bin/bash
+  register: node_version_output
+
+- name: Print Node.js version
+  ansible.builtin.debug:
+    msg: "Node.js version is {{ node_version_output.stdout }}"
