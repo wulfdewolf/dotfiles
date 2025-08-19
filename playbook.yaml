@@ -6,22 +6,21 @@
     git_user_name: "wulfdewolf"
     git_user_email: "wolf2wulf@gmail.com"
   roles:
-    #- apps
+    - apps
     - nodejs
-    #- rust
-    #- alacritty
-    #- yazi
-    #- lazygit
-    #- python_tools
-    #- nvim
-    #- chezmoi
-    #- fonts
-    # - slack
-  #tasks:
-  #  - name: Set global Git username
-  #    ansible.builtin.command:
-  #      cmd: git config --global user.name "{{ git_user_name }}"
+    - rust
+    - alacritty
+    - lazygit
+    - python_tools
+    - nvim
+    - chezmoi
+    - fonts
+    - slack
+  tasks:
+    - name: Set global Git username
+      ansible.builtin.command:
+        cmd: git config --global user.name "{{ git_user_name }}"
 
-  #  - name: Set global Git email
-  #    ansible.builtin.command:
-  #      cmd: git config --global user.email "{{ git_user_email }}"
+    - name: Set global Git email
+      ansible.builtin.command:
+        cmd: git config --global user.email "{{ git_user_email }}"
