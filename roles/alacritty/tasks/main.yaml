@@ -56,5 +56,5 @@
 
 - name: Set alacritty as default x-terminal-emulator
   ansible.builtin.command:
-    cmd: update-alternatives --set x-terminal-emulator /usr/bin/alacritty
+    cmd: update-alternatives --set x-terminal-emulator /usr/local/bin/alacritty
   become: yes
