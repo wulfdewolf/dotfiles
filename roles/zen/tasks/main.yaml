@@ -1,0 +1,48 @@
+- name: Retrieve latest Zen Browser release data
+  uri:
+    url: https://api.github.com/repos/zen-browser/desktop/releases/latest
+    return_content: yes
+  register: zen_release
+
+- name: Debug available assets
+  ansible.builtin.debug:
+    var: zen_release.json.assets | map(attribute='name') | list
+
+- name: Extract browser Linux tarball download URL
+  set_fact:
+    zen_url: >-
+      {{
+        zen_release.json.assets
+        | selectattr('name', 'equalto', 'zen.linux-x86_64.tar.xz')
+        | map(attribute='browser_download_url')
+        | list
+        | first
+      }}
+
+- name: Download Zen Browser tarball
+  get_url:
+    url: "{{ zen_url }}"
+    dest: "/tmp/zen-browser.tar.xz"
+    mode: '0644'
+
+- name: Ensure /opt/zen directory exists
+  file:
+    path: /opt/zen
+    state: directory
+    mode: '0755'
+  become: yes
+
+- name: Extract Zen Browser into /opt/zen
+  unarchive:
+    src: /tmp/zen-browser.tar.xz
+    dest: /opt/zen
+    remote_src: yes
+  become: yes
+
+- name: Symlink zen binary into PATH
+  file:
+    src: "/opt/zen/zen"
+    dest: /usr/local/bin/zen
+    state: link
+    force: yes
+  become: yes
