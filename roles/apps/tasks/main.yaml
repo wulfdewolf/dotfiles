@@ -17,7 +17,6 @@
       - flameshot 
       - xss-lock
       - x11-utils
-      - xrandr
       - setxkbmap
       - xset
       - dex
