@@ -6,7 +6,7 @@
 
 - name: Set lazygit download URL (linux amd64 tarball)
   set_fact:
-    lazygit_url: "{{ lazygit_release.json.assets | selectattr('name', 'match', 'lazygit_.*_Linux_x86_64.tar.gz') | map(attribute='browser_download_url') | list | first }}"
+    lazygit_url: "{{ lazygit_release.json.assets | selectattr('name', 'match', 'lazygit_.*_linux_x86_64.tar.gz') | map(attribute='browser_download_url') | list | first }}"
 
 - name: Download lazygit archive
   get_url:
