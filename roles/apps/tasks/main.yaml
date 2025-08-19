@@ -16,7 +16,6 @@
       - xautolock
       - flameshot 
       - xss-lock
-      - x11-server-utils
       - x11-utils
       - xrandr
       - setxkbmap
