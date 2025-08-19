@@ -50,7 +50,7 @@
       update-alternatives --install
       /usr/bin/x-terminal-emulator
       x-terminal-emulator
-      /usr/bin/alacritty
+      /usr/local/bin/alacritty
       50
   become: yes
 
