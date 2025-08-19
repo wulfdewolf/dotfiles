@@ -18,8 +18,6 @@
       - xss-lock
       - x11-utils
       - x11-xkb-utils
-      - xset
-      - dex
       - picom
       - feh
       - network-manager
