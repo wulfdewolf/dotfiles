@@ -173,8 +173,8 @@ bindsym $mod+Mod1+l move workspace to output right
 bindsym $mod+s exec --no-startup-id sh -c 'i3-msg workspace 3 && slack'
 bindsym $mod+b exec --no-startup-id sh -c 'i3-msg workspace 2 && zen'
 
-bindsym $mod+Shift+x exec i3lock -c 000000
-exec --no-startup-id xautolock -time 10 -locker "i3lock -c 000000"
+bindsym $mod+Shift+x exec i3lock
+exec --no-startup-id xautolock -time 10 -locker "i3lock"
 
 exec_always --no-startup-id picom --experimental-backends
 exec setup_monitors.sh
