@@ -15,6 +15,7 @@
     - nvim
     - chezmoi
     - fonts
+    - zen
   tasks:
     - name: Set global Git username
       ansible.builtin.command:

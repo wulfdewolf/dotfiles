@@ -41,7 +41,7 @@
 
 - name: Symlink zen binary into PATH
   file:
-    src: "/opt/zen/zen"
+    src: "/opt/zen/zen/zen"
     dest: /usr/local/bin/zen
     state: link
     force: yes

@@ -11,12 +11,12 @@ return {
             require("mason-lspconfig").setup({
                 ensure_installed = {
                     "lua_ls",
-                    "pyright",
-                    "ruff",
+                    "basedpyright",
                     "html",
                     "matlab_ls",
                     "marksman",
-                    "tinymist"
+                    "tinymist",
+                    "ruff"
                 },
             })
         end,
@@ -29,8 +29,18 @@ return {
             capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
             local lspconfig = require("lspconfig")
             lspconfig.lua_ls.setup({})
-            lspconfig.ruff.setup({})
+            lspconfig.basedpyright.setup({
+                capabilities = capabilities,
+                settings = {
+                    basedpyright = {
+                        analysis = {
+                            typeCheckingMode = "basic",
+                        },
+                    },
+                }
+            })
             lspconfig.marksman.setup({})
+            lspconfig.ruff.setup({})
             lspconfig.matlab_ls.setup({})
             lspconfig.html.setup({
                 filetypes = { "html", "liquid" }
@@ -43,9 +53,6 @@ return {
                     formatterPrintWidth = 88
                 }
             }
-            vim.keymap.set("n", "<leader>ff", vim.lsp.buf.format, {})
-
-            -- Disable overlap between Ruff and Pyright
             vim.api.nvim_create_autocmd("LspAttach", {
                 group = vim.api.nvim_create_augroup('lsp_attach_disable_ruff_hover', { clear = true }),
                 callback = function(args)
@@ -60,23 +67,7 @@ return {
                 end,
                 desc = 'LSP: Disable hover capability from Ruff',
             })
-            require('lspconfig').pyright.setup {
-                on_attach = function(client, bufnr)
-                    client.server_capabilities.diagnosticProvider = nil
-                end,
-                settings = {
-                    pyright = {
-                        disableOrganizeImports = true,
-                    },
-                    python = {
-                        analysis = {
-                            ignore = { '*' },
-                            typeCheckingMode = "off",
-                        },
-                    },
-                },
-            }
-            vim.lsp.enable('pyright')
+            vim.keymap.set("n", "<leader>ff", vim.lsp.buf.format, {})
         end,
     },
 }
