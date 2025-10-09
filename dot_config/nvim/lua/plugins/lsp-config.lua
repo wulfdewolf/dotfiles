@@ -13,32 +13,60 @@ return {
                     "lua_ls",
                     "html",
                     "tinymist",
-                    "ruff"
+                    "ruff",
+                    "jedi_language_server",
                 },
+                automatic_installation = true,
             })
         end,
     },
     {
         "neovim/nvim-lspconfig",
+        dependencies = { "hrsh7th/cmp-nvim-lsp" },
         config = function()
-            -- nvim-cmp supports additional completion capabilities, so broadcast that to servers
-            local capabilities = vim.lsp.protocol.make_client_capabilities()
-            capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
             local lspconfig = require("lspconfig")
-            lspconfig.lua_ls.setup({})
-            lspconfig.ruff.setup({})
-            lspconfig.html.setup({
-                filetypes = { "html", "liquid" }
-            })
-            lspconfig.tinymist.setup {
-                settings = {
-                    formatterMode = "typstyle",
-                    semanticTokens = "disable",
-                    formatterProseWrap = true,
-                    formatterPrintWidth = 88
-                }
+            local capabilities = require("cmp_nvim_lsp").default_capabilities()
+
+            -- Define a generic on_attach function for all servers
+            local on_attach = function(_, bufnr)
+                local bufmap = function(mode, lhs, rhs)
+                    vim.keymap.set(mode, lhs, rhs, { buffer = bufnr })
+                end
+                bufmap("n", "<leader>ff", function() vim.lsp.buf.format({ async = true }) end)
+                -- Add more LSP-related keymaps here if needed
+            end
+
+            -- Servers and their specific settings
+            local servers = {
+                lua_ls = {
+                    settings = {
+                        Lua = {
+                            diagnostics = { globals = { "vim" } },
+                            workspace = { checkThirdParty = false },
+                        },
+                    },
+                },
+                ruff = {},
+                jedi_language_server = {},
+                html = {
+                    filetypes = { "html", "liquid" },
+                },
+                tinymist = {
+                    settings = {
+                        formatterMode = "typstyle",
+                        semanticTokens = "disable",
+                        formatterProseWrap = true,
+                        formatterPrintWidth = 88
+                    }
+                },
             }
-            vim.keymap.set("n", "<leader>ff", vim.lsp.buf.format, {})
+
+            -- Setup each server with common capabilities and on_attach
+            for name, opts in pairs(servers) do
+                opts.capabilities = capabilities
+                opts.on_attach = on_attach
+                lspconfig[name].setup(opts)
+            end
         end,
     },
 }
