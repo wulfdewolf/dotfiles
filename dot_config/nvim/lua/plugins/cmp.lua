@@ -68,6 +68,10 @@ return {
             -- 		winhighlight = "Normal:CmpPmenu,CursorLine:PmenuSel,Search:None",
             -- 	}),
             -- },
+            experimental = {
+                -- true makes me confused on what is cmp and what is copilot
+                ghost_text = false,
+            },
 
             -- These mappings are active even if cmp menu is not open!
             mapping = cmp.mapping.preset.insert({
