@@ -2,8 +2,7 @@ general.import = ["~/.config/alacritty/rose-pine.toml"]
 
 [window]
 decorations = "buttonless"
-dynamic_padding = false
-opacity = 0.5
+dynamic_padding = true
 
 [window.padding]
 x = 0
