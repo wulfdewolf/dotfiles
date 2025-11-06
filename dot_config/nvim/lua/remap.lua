@@ -2,22 +2,21 @@ vim.api.nvim_set_keymap('n', '<C-b>', ':e #<CR>', { noremap = true, silent = tru
 vim.keymap.set('n', '<C-z>', '<Nop>', { noremap = true, silent = true })
 
 vim.keymap.set('n', '<leader>x', function()
-    vim.cmd("wa") -- Save all
+    vim.cmd("wa") -- Save all buffers
 
-    -- Gather real .py file paths from open buffers
-    local buffers = vim.api.nvim_list_bufs()
+    -- Step 0: Get Git-modified Python files
+    local git_cmd = { "git", "diff", "--name-only" }
+    local git_files = vim.fn.systemlist(git_cmd)
+
     local files = {}
-    for _, buf in ipairs(buffers) do
-        if vim.api.nvim_buf_is_loaded(buf) and vim.api.nvim_buf_get_option(buf, "modifiable") then
-            local path = vim.api.nvim_buf_get_name(buf)
-            if path ~= "" and vim.endswith(path, ".py") and vim.loop.fs_stat(path) then
-                table.insert(files, path)
-            end
+    for _, path in ipairs(git_files) do
+        if vim.endswith(path, ".py") and vim.loop.fs_stat(path) then
+            table.insert(files, path)
         end
     end
 
     if #files == 0 then
-        print("No Python files to run check/fix on.")
+        print("No modified Python files found in Git.")
         return
     end
 
@@ -37,11 +36,12 @@ vim.keymap.set('n', '<leader>x', function()
         return
     end
 
-    -- Step 3: Reload all modified files from disk
-    for _, file in ipairs(files) do
-        local bufnr = vim.fn.bufnr(file)
-        if bufnr ~= -1 then
-            vim.api.nvim_buf_call(bufnr, function()
+    -- Step 3: Reload only open buffers that were modified
+    local buffers = vim.api.nvim_list_bufs()
+    for _, buf in ipairs(buffers) do
+        local buf_path = vim.api.nvim_buf_get_name(buf)
+        if buf_path ~= "" and vim.tbl_contains(files, buf_path) then
+            vim.api.nvim_buf_call(buf, function()
                 vim.cmd("checktime")
             end)
         end
@@ -67,8 +67,8 @@ vim.keymap.set("n", "<leader>Y", [["+Y]])
 vim.keymap.set("n", "Q", "<nop>")
 vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
 
-vim.keymap.set("n", "<C-d>", "<C-d>zz", {desc = "Center cursor after moving down half-page"})
-vim.keymap.set("n", "<C-u>", "<C-u>zz", {desc = "Center cursor after moving down half-page"})
+vim.keymap.set("n", "<C-d>", "<C-d>zz", { desc = "Center cursor after moving down half-page" })
+vim.keymap.set("n", "<C-u>", "<C-u>zz", { desc = "Center cursor after moving down half-page" })
 
 vim.keymap.set('n', 'gs', function()
     vim.cmd('vsplit')
