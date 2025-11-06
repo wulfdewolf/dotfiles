@@ -1,0 +1,35 @@
+[theme.overrides]
+idle_bg = "#1e1e2e"     # base
+idle_fg = "#cdd6f4"     # text
+info_fg = "#89b4fa"     # blue
+good_fg = "#a6e3a1"     # green
+warning_fg = "#f9e2af"  # yellow
+critical_fg = "#f38ba8" # red
+
+[[block]]
+block = "memory"
+interval = 30
+warning_mem = 70
+critical_mem = 90
+
+[[block]]
+block = "disk_space"
+info_type = "available"
+alert_unit = "GB"
+alert = 10.0
+warning = 15.0
+format = " $icon $available "
+
+[[block]]
+block = "net"
+format = " $icon {$signal_strength $ssid }"
+
+[[block]]
+block = "battery"
+format = " $icon $percentage "
+
+[[block]]
+block = "time"
+interval = 60
+[block.format]
+short = " $icon $timestamp.datetime(f:%R) "
