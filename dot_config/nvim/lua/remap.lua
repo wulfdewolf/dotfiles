@@ -5,18 +5,24 @@ vim.keymap.set('n', '<leader>x', function()
     vim.cmd("wa") -- Save all buffers
 
     -- Step 0: Get Git-modified Python files
-    local git_cmd = { "git", "diff", "--name-only" }
-    local git_files = vim.fn.systemlist(git_cmd)
+    local modified_files = vim.fn.systemlist({ "git", "diff", "--name-only" })
+    local new_files      = vim.fn.systemlist({ "git", "ls-files", "--others", "--exclude-standard" })
 
+    -- Combine and filter Python files that exist
     local files = {}
-    for _, path in ipairs(git_files) do
-        if vim.endswith(path, ".py") and vim.loop.fs_stat(path) then
-            table.insert(files, path)
+    local function add_py_files(file_list)
+        for _, path in ipairs(file_list) do
+            if vim.endswith(path, ".py") and vim.loop.fs_stat(path) then
+                table.insert(files, path)
+            end
         end
     end
 
+    add_py_files(modified_files)
+    add_py_files(new_files)
+
     if #files == 0 then
-        print("No modified Python files found in Git.")
+        print("No modified or new Python files found in Git.")
         return
     end
 
@@ -53,7 +59,6 @@ vim.keymap.set('n', '<leader>x', function()
         print("Error switching tmux window:\n" .. table.concat(tmux_result, "\n"))
     end
 end, { noremap = true, silent = true })
-
 
 
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
