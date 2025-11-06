@@ -1,10 +1,12 @@
 [theme.overrides]
-idle_bg = "#1e1e2e"     # base
 idle_fg = "#cdd6f4"     # text
 info_fg = "#89b4fa"     # blue
 good_fg = "#a6e3a1"     # green
 warning_fg = "#f9e2af"  # yellow
 critical_fg = "#f38ba8" # red
+
+[general]
+block_default_bg = "#1e1e2e"
 
 [[block]]
 block = "memory"
