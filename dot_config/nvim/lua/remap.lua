@@ -2,59 +2,15 @@ vim.api.nvim_set_keymap('n', '<C-b>', ':e #<CR>', { noremap = true, silent = tru
 vim.keymap.set('n', '<C-z>', '<Nop>', { noremap = true, silent = true })
 
 vim.keymap.set('n', '<leader>x', function()
-    vim.cmd("wa") -- Save all buffers
+    -- Save all buffers
+    vim.cmd("wa")
 
-    -- Step 0: Get Git-modified Python files
-    local git_cmd = { "git", "diff", "--name-only" }
-    local git_files = vim.fn.systemlist(git_cmd)
-
-    local files = {}
-    for _, path in ipairs(git_files) do
-        if vim.endswith(path, ".py") and vim.loop.fs_stat(path) then
-            table.insert(files, path)
-        end
-    end
-
-    if #files == 0 then
-        print("No modified Python files found in Git.")
-        return
-    end
-
-    -- Step 1: Run uv run ruff check --fix
-    local check_cmd = { "uv", "run", "ruff", "check", "--fix", unpack(files) }
-    local check_result = vim.fn.systemlist(check_cmd)
+    -- Move to the next tmux window
+    local result = vim.fn.system('tmux next-window')
     if vim.v.shell_error ~= 0 then
-        print("uv run ruff check --fix failed:\n" .. table.concat(check_result, "\n"))
-        return
-    end
-
-    -- Step 2: Run uv run ruff format
-    local format_cmd = { "uv", "run", "ruff", "format", unpack(files) }
-    local format_result = vim.fn.systemlist(format_cmd)
-    if vim.v.shell_error ~= 0 then
-        print("uv run ruff format failed:\n" .. table.concat(format_result, "\n"))
-        return
-    end
-
-    -- Step 3: Reload only open buffers that were modified
-    local buffers = vim.api.nvim_list_bufs()
-    for _, buf in ipairs(buffers) do
-        local buf_path = vim.api.nvim_buf_get_name(buf)
-        if buf_path ~= "" and vim.tbl_contains(files, buf_path) then
-            vim.api.nvim_buf_call(buf, function()
-                vim.cmd("checktime")
-            end)
-        end
-    end
-
-    -- Step 4: Switch to previous tmux window
-    local tmux_result = vim.fn.systemlist('tmux select-window -t :-')
-    if vim.v.shell_error ~= 0 then
-        print("Error switching tmux window:\n" .. table.concat(tmux_result, "\n"))
+        print("Error switching tmux window:\n" .. result)
     end
 end, { noremap = true, silent = true })
-
-
 
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
