@@ -83,3 +83,10 @@ end, { range = true })
 
 -- visual‑mode shortcut
 vim.keymap.set('v', '<C-r>', ":'<,'>SendCodeToTmuxTmpRun<CR>", { noremap = true, silent = true })
+
+vim.keymap.set(
+    "n",
+    "<leader>ff",
+    function() vim.lsp.buf.format({ async = true }) end,
+    { buffer = bufnr }
+)
