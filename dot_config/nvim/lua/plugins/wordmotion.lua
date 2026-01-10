@@ -1,6 +1,3 @@
-return {
-    "chaoren/vim-wordmotion",
-    init = function()
-        vim.g.wordmotion_prefix = '<Leader>'
-    end,
-}
+vim.pack.add({
+    { src = "https://github.com/chaoren/vim-wordmotion", name = "vim-wordmotion" },
+})
