@@ -58,7 +58,7 @@ export EDITOR="$VISUAL"
 
 
 bind -x '"\C-f":find.sh'
-bind -x '"\C-x":lazygit'
+bind -x '"\C-x":uv run lazygit'
 bind -x '"\C-p":project.sh'
 bind -x '"\C-g":tmux_sessionizer.sh'
 bind -x '"\C-n":yazi'
