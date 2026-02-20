@@ -1,9 +1,9 @@
 vim.pack.add({
-  { src = "https://github.com/nvim-lua/plenary.nvim" },
+    { src = "https://github.com/nvim-lua/plenary.nvim" },
     {
-    src = "https://github.com/ThePrimeagen/harpoon.git",
-    version = "harpoon2",
-  },
+        src = "https://github.com/ThePrimeagen/harpoon.git",
+        version = "harpoon2",
+    },
 })
 local harpoon = require("harpoon")
 harpoon:setup()
@@ -19,3 +19,7 @@ vim.keymap.set("n", "<M-4>", function() harpoon:list():select(4) end)
 -- Toggle previous & next buffers stored within Harpoon list
 vim.keymap.set("n", "<M-h>", function() harpoon:list():prev() end)
 vim.keymap.set("n", "<M-l>", function() harpoon:list():next() end)
+
+vim.keymap.set("n", "<M-=>", function()
+    harpoon:list():clear()
+end, { desc = "Harpoon: clear list" })

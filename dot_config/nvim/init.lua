@@ -8,7 +8,6 @@ vim.lsp.enable(lsp_configs)
 require("config.options")
 require("config.remap")
 
-require("plugins.colortheme")
 require("plugins.oil")
 require("plugins.treesitter")
 require("plugins.mason")
