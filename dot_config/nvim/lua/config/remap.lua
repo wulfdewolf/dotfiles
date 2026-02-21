@@ -26,6 +26,13 @@ vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><
 vim.keymap.set("n", "<C-d>", "<C-d>zz", { desc = "Center cursor after moving down half-page" })
 vim.keymap.set("n", "<C-u>", "<C-u>zz", { desc = "Center cursor after moving down half-page" })
 
+vim.diagnostic.config({
+    virtual_text = true, -- show error messages inline
+    signs = true,        -- gutter signs
+    underline = true,    -- underline issues
+})
+vim.keymap.set('n', 'gd', vim.lsp.buf.definition, { noremap = true, silent = true })
+vim.keymap.set('n', 'gr', vim.lsp.buf.references, { noremap = true, silent = true })
 vim.keymap.set('n', 'gs', function()
     vim.cmd('vsplit')
     vim.lsp.buf.definition()
@@ -90,3 +97,5 @@ vim.keymap.set(
     function() vim.lsp.buf.format({ async = true }) end,
     { buffer = bufnr }
 )
+
+vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, { noremap = true, silent = true })

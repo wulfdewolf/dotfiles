@@ -7,6 +7,7 @@ vim.lsp.enable(lsp_configs)
 
 require("config.options")
 require("config.remap")
+require("config.funcs")
 
 require("plugins.oil")
 require("plugins.treesitter")

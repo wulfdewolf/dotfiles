@@ -37,3 +37,6 @@ vim.opt.updatetime = 50
 vim.opt.colorcolumn = "88"
 
 vim.g.have_nerd_font = true
+
+vim.opt.termguicolors = true
+vim.cmd.colorscheme("habamax")
