@@ -5,9 +5,9 @@ for _, f in pairs(vim.api.nvim_get_runtime_file('lsp/*.lua', true)) do
 end
 vim.lsp.enable(lsp_configs)
 
+require("config.funcs")
 require("config.options")
 require("config.remap")
-require("config.funcs")
 
 require("plugins.oil")
 require("plugins.treesitter")
