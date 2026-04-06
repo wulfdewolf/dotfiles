@@ -28,24 +28,9 @@ zstyle ':vcs_info:git:*' actionformats ' (%F{cyan}%b%f|%F{yellow}%a%f)'
 setopt PROMPT_SUBST
 PROMPT='%n@%m %~${vcs_info_msg_0_}> '
 
-# --- Completion (important for your use case) ---
-zstyle ':completion:*' menu select
-zstyle ':completion:*' list-dirs-first true
-
-# Ignore extensions first, allow on second completion
-zstyle ':completion:*' ignored-patterns '*.*'
-zstyle ':completion:*' completer _complete _ignored
-
-# --- Aliases (example) ---
-alias ll='ls -lah'
-alias la='ls -A'
-alias l='ls -CF'
-
+# --- Aliases  ---
 export EDITOR=nvim
 export PATH="$HOME/bin:$PATH"
-
-zstyle ':completion:*' group-name ''
-zstyle ':completion:*' format '%F{yellow}%d%f'
 
 # --- Enable vi mode ---
 bindkey -v
