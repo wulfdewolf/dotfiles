@@ -1,0 +1,87 @@
+# --- Core ---
+autoload -Uz compinit
+compinit
+
+# --- History ---
+HISTFILE=~/.zsh_history
+HISTSIZE=10000
+SAVEHIST=10000
+setopt appendhistory sharehistory hist_ignore_dups hist_reduce_blanks
+
+# --- Navigation ---
+setopt autocd
+setopt pushdignoredups
+
+# --- Globbing ---
+setopt extendedglob
+setopt nocaseglob
+
+# --- Usability ---
+setopt interactivecomments
+setopt correct
+
+# --- Prompt ---
+autoload -Uz vcs_info
+precmd() { vcs_info }
+zstyle ':vcs_info:git:*' formats ' (%F{cyan}%b%f)'
+zstyle ':vcs_info:git:*' actionformats ' (%F{cyan}%b%f|%F{yellow}%a%f)'
+setopt PROMPT_SUBST
+PROMPT='%n@%m %~${vcs_info_msg_0_}> '
+
+# --- Completion (important for your use case) ---
+zstyle ':completion:*' menu select
+zstyle ':completion:*' list-dirs-first true
+
+# Ignore extensions first, allow on second completion
+zstyle ':completion:*' ignored-patterns '*.*'
+zstyle ':completion:*' completer _complete _ignored
+
+# --- Aliases (example) ---
+alias ll='ls -lah'
+alias la='ls -A'
+alias l='ls -CF'
+
+export EDITOR=nvim
+export PATH="$HOME/bin:$PATH"
+
+zstyle ':completion:*' group-name ''
+zstyle ':completion:*' format '%F{yellow}%d%f'
+
+# --- Enable vi mode ---
+bindkey -v
+
+# open python project
+project_widget() {
+    BUFFER="$HOME/.local/bin/project.sh"
+    CURSOR=${#BUFFER}
+    zle accept-line
+}
+zle -N project_widget
+bindkey -M viins '^P' project_widget
+
+# find a file and open with default app
+find_widget() {
+    BUFFER="$HOME/.local/bin/find.sh"
+    CURSOR=${#BUFFER}
+    zle accept-line
+}
+zle -N find_widget
+bindkey -M viins '^F' find_widget
+
+# open a normal project
+sessionizer_widget() {
+    BUFFER="$HOME/.local/bin/tmux_sessionizer.sh"
+    CURSOR=${#BUFFER}
+    zle accept-line
+}
+zle -N sessionizer_widget
+bindkey -M viins '^G' sessionizer_widget
+
+# lazygit
+lazygit_widget() {
+    BUFFER="lazygit"
+    CURSOR=${#BUFFER}
+    zle accept-line
+}
+zle -N lazygit_widget
+bindkey -M viins '^X' lazygit_widget
