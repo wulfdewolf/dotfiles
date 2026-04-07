@@ -23,10 +23,11 @@ setopt correct
 # --- Prompt ---
 autoload -Uz vcs_info
 precmd() { vcs_info }
-zstyle ':vcs_info:git:*' formats ' (%F{cyan}%b%f)'
-zstyle ':vcs_info:git:*' actionformats ' (%F{cyan}%b%f|%F{yellow}%a%f)'
+zstyle ':vcs_info:git:*' formats '  %b'
+zstyle ':vcs_info:git:*' actionformats '  %b|%a'
 setopt PROMPT_SUBST
-PROMPT='%n@%m %~${vcs_info_msg_0_}> '
+PROMPT='%F{cyan}%~%f${vcs_info_msg_0_} > '
+RPROMPT='%(?..%F{red}✗ %?%f)'
 
 # --- Aliases  ---
 export EDITOR=nvim
@@ -35,6 +36,12 @@ export PATH="$HOME/bin:$PATH"
 # --- Enable vi mode ---
 bindkey -v
 
+# --- Lists ---
+alias ls='eza --icons --color=always --group-directories-first'
+alias ll='eza -lah --icons --git'
+alias lt='eza --tree --level=2 --icons'
+#
+# --- Custom scripts ---
 # open python project
 project_widget() {
     BUFFER="$HOME/.local/bin/project.sh"
@@ -70,3 +77,7 @@ lazygit_widget() {
 }
 zle -N lazygit_widget
 bindkey -M viins '^X' lazygit_widget
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+bindkey -M viins '^R' fzf-history-widget
+
