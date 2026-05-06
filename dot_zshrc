@@ -71,7 +71,7 @@ bindkey -M viins '^G' sessionizer_widget
 
 # lazygit
 lazygit_widget() {
-    BUFFER="lazygit"
+    BUFFER="uv run lazygit"
     CURSOR=${#BUFFER}
     zle accept-line
 }
