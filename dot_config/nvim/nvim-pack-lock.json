@@ -25,6 +25,10 @@
       "rev": "7c0a674f620ddc701903b887b2dade836b23ea79",
       "src": "https://github.com/echasnovski/mini.pick"
     },
+    "neovim": {
+      "rev": "cf2a288696b03d0934da713d66c6d71557b5c997",
+      "src": "https://github.com/rose-pine/neovim.git"
+    },
     "nvim-cmp": {
       "rev": "85bbfad83f804f11688d1ab9486b459e699292d6",
       "src": "https://github.com/hrsh7th/nvim-cmp"
@@ -49,6 +53,10 @@
     "rose-pine": {
       "rev": "cf2a288696b03d0934da713d66c6d71557b5c997",
       "src": "https://github.com/rose-pine/neovim"
+    },
+    "semshi": {
+      "rev": "252f07fd5f0ae9eb19d02bae979fd7c9152c1ccf",
+      "src": "https://github.com/numirias/semshi"
     },
     "vim-wordmotion": {
       "rev": "81d9bd298376ab0dc465c85d55afa4cb8d5f47a1",
