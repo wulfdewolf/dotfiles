@@ -1,0 +1,46 @@
+{
+    "layer": "top",
+    "position": "top",
+    "height": 40,
+
+    "modules-left": ["hyprland/workspaces"],
+    "modules-right": ["battery", "wireplumber", "custom/bluetooth", "clock", "tray"],
+
+    "clock": {
+        "format": "{:%a %d %b %H:%M}"
+    },
+    "tray": {
+        "icon-size": 16,
+        "spacing": 10
+    },
+
+    "wireplumber": {
+       "format": "  {volume}%",
+       "format-muted": "  muted",
+       "on-click": "pavucontrol"
+     },
+     "custom/bluetooth": {
+        "format": "  {}",
+        "exec": "bluetoothctl show | grep 'Powered: yes' > /dev/null && echo on || echo off",
+        "interval": 5,
+        "on-click": "blueman-manager",
+        "tooltip": true
+      },
+
+    "battery": {
+        "format": "{icon} {capacity}%",
+        "format-charging": "󰂄 {capacity}%",
+        "format-icons": [
+            "󰁺",
+            "󰁻",
+            "󰁼",
+            "󰁽",
+            "󰁾",
+            "󰁿",
+            "󰂀",
+            "󰂁",
+            "󰂂",
+            "󰁹"
+        ]
+    }
+}

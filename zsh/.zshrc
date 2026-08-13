@@ -78,6 +78,13 @@ lazygit_widget() {
 zle -N lazygit_widget
 bindkey -M viins '^X' lazygit_widget
 
+source /usr/share/fzf/key-bindings.zsh
+source /usr/share/fzf/completion.zsh
+
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 bindkey -M viins '^R' fzf-history-widget
 
+alias seddie="kitten ssh seddie"
+alias eddie="kitten ssh eddie"
+alias nolan="kitten ssh -Y nolan"
+alias nvim="/opt/nvim/bin/nvim"

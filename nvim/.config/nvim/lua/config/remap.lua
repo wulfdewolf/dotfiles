@@ -5,10 +5,14 @@ vim.keymap.set('n', '<leader>x', function()
     -- Save all buffers
     vim.cmd("wa")
 
-    -- Move to the next tmux window
-    local result = vim.fn.system('tmux next-window')
+    -- Try last window first
+    local result = vim.fn.system('tmux last-window')
     if vim.v.shell_error ~= 0 then
-        print("Error switching tmux window:\n" .. result)
+        -- No last window, move to next window instead
+        local next_result = vim.fn.system('tmux next-window')
+        if vim.v.shell_error ~= 0 then
+            print("Error switching tmux window:\n" .. next_result)
+        end
     end
 end, { noremap = true, silent = true })
 
