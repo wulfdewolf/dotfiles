@@ -44,7 +44,7 @@ alias lt='eza --tree --level=2 --icons'
 # --- Custom scripts ---
 # open python project
 project_widget() {
-    BUFFER="$HOME/.local/bin/project.sh"
+    BUFFER="$HOME/dotfiles/bin/project.sh"
     CURSOR=${#BUFFER}
     zle accept-line
 }
@@ -53,7 +53,7 @@ bindkey -M viins '^P' project_widget
 
 # find a file and open with default app
 find_widget() {
-    BUFFER="$HOME/.local/bin/find.sh"
+    BUFFER="$HOME/dotfiles/bin/find.sh"
     CURSOR=${#BUFFER}
     zle accept-line
 }
@@ -62,7 +62,7 @@ bindkey -M viins '^F' find_widget
 
 # open a normal project
 sessionizer_widget() {
-    BUFFER="$HOME/.local/bin/tmux_sessionizer.sh"
+    BUFFER="$HOME/dotfiles/bin/tmux_sessionizer.sh"
     CURSOR=${#BUFFER}
     zle accept-line
 }
@@ -78,9 +78,13 @@ lazygit_widget() {
 zle -N lazygit_widget
 bindkey -M viins '^X' lazygit_widget
 
-source /usr/share/fzf/key-bindings.zsh
-source /usr/share/fzf/completion.zsh
-
+if [[ -f /usr/share/fzf/examples/key-bindings.zsh ]]; then
+    source /usr/share/fzf/examples/key-bindings.zsh
+    source /usr/share/fzf/examples/completion.zsh
+elif [[ -f /usr/share/fzf/key-bindings.zsh ]]; then
+    source /usr/share/fzf/key-bindings.zsh
+    source /usr/share/fzf/completion.zsh
+fi
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 bindkey -M viins '^R' fzf-history-widget
 
@@ -88,3 +92,5 @@ alias seddie="kitten ssh seddie"
 alias eddie="kitten ssh eddie"
 alias nolan="kitten ssh -Y nolan"
 alias nvim="/opt/nvim/bin/nvim"
+
+. "$HOME/.local/bin/env"
